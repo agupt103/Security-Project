@@ -1,0 +1,51 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<http auto-config="true">
+		<intercept-url pattern="/admin**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/viewusers**" access="ROLE_USER" />
+		<intercept-url pattern='/**' requires-channel='https' />
+
+		<form-login login-page="/login" default-target-url="/welcome"
+			authentication-failure-url="/login?error" username-parameter="username"
+			password-parameter="password" />
+		<logout logout-success-url="/login?logout" />
+		
+		<csrf />
+
+		<headers>
+			<frame-options policy="DENY" />
+		</headers>
+
+		<headers>
+			<xss-protection />
+		</headers>
+
+		<headers>
+			<hsts include-subdomains="true" max-age-seconds="31536000"></hsts>
+		</headers>
+
+		<headers>
+			<content-type-options />
+		</headers>
+
+		<headers>
+			<cache-control />
+		</headers>
+
+	</http>
+
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="soogi" password="123456" authorities="ROLE_USER" />
+				<user name="soroosh" password="1111" authorities="ROLE_ADMIN" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+
+</beans:beans>
